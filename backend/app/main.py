@@ -10,3 +10,5 @@ app.include_router(sim_router)
 @app.get("/")
 def home():
     return {"status": "Rocket API running"}
+
+    

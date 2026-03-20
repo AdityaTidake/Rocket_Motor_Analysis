@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from app.services.metrics_calc import compute_metrics 
 
 
 def validate_data(df):
@@ -32,32 +33,14 @@ def clean_data(df):
     # smooth thrust noise
     df["thrust"] = df["thrust"].rolling(3).mean()
 
+    df["time"] = df["time"].round(3)
+    df["thrust"] = df["thrust"].round(3) 
+
     # remove NaN rows
     df = df.dropna()
 
     return df
 
-
-def compute_metrics(df):
-    """Calculate motor metrics"""
-
-    time = df["time"].values
-    thrust = df["thrust"].values
-
-    burn_time = time[-1] - time[0]
-
-    total_impulse = np.trapezoid(thrust, time)
-
-    avg_thrust = total_impulse / burn_time
-
-    peak_thrust = np.max(thrust)
-
-    return {
-        "burn_time": float(burn_time),
-        "total_impulse": float(total_impulse),
-        "avg_thrust": float(avg_thrust),
-        "peak_thrust": float(peak_thrust)
-    }
 
 
 def process_thrust_curve(df):
@@ -69,4 +52,4 @@ def process_thrust_curve(df):
 
     metrics = compute_metrics(df)
 
-    return df, metrics
+    return df 

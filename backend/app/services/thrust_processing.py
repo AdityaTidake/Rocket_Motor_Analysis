@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-from app.services.metrics_calc import compute_metrics 
 
 
 def validate_data(df):
@@ -24,32 +23,29 @@ def validate_data(df):
 def clean_data(df):
     """Clean and smooth thrust curve"""
 
-    # sort by time
+    # Sort by time
     df = df.sort_values("time")
 
-    # fill missing values
+    # Fill missing values
     df = df.interpolate()
 
-    # smooth thrust noise
-    df["thrust"] = df["thrust"].rolling(3).mean()
+    # Smooth thrust (rolling average)
+    df["thrust"] = df["thrust"].rolling(window=3, min_periods=1).mean()
 
+    # Round values
     df["time"] = df["time"].round(3)
-    df["thrust"] = df["thrust"].round(3) 
+    df["thrust"] = df["thrust"].round(3)
 
-    # remove NaN rows
+    # Drop NaN
     df = df.dropna()
 
     return df
-
 
 
 def process_thrust_curve(df):
     """Complete processing pipeline"""
 
     df = validate_data(df)
-
     df = clean_data(df)
 
-    metrics = compute_metrics(df)
-
-    return df 
+    return df   # ✅ ONLY return df

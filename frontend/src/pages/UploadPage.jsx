@@ -22,7 +22,7 @@ export default function UploadPage() {
       const form = new FormData()
       form.append('file', file)
 
-      let url = '/upload'
+      let url = '/upload/'
       const params = []
       if (minTime !== '') params.push(`min_time=${minTime}`)
       if (maxTime !== '') params.push(`max_time=${maxTime}`)

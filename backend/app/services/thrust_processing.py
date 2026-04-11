@@ -5,17 +5,33 @@ import numpy as np
 def validate_data(df):
     """Validate thrust CSV structure"""
 
-    required_columns = ["time", "thrust"]
+    # Normalize column names
+    df.columns = [
+        c.strip().lower().replace(" ", "").replace("(", "").replace(")", "")
+        for c in df.columns
+    ]
 
-    for col in required_columns:
-        if col not in df.columns:
-            raise ValueError(f"Missing column: {col}")
+    # Map variations
+    column_map = {
+        "times": "time",
+        "timesec": "time",
+        "t": "time",
+        "thrustn": "thrust",
+        "force": "thrust"
+    }
 
+    df = df.rename(columns=column_map)
+
+    # Required columns
+    if "time" not in df.columns or "thrust" not in df.columns:
+        raise ValueError("CSV must contain 'time' and 'thrust' columns")
+
+    # Value checks
     if (df["time"] < 0).any():
-        raise ValueError("Time values cannot be negative")
+        raise ValueError("Time cannot be negative")
 
     if (df["thrust"] < 0).any():
-        raise ValueError("Thrust values cannot be negative")
+        raise ValueError("Thrust cannot be negative")
 
     return df
 
@@ -23,20 +39,14 @@ def validate_data(df):
 def clean_data(df):
     """Clean and smooth thrust curve"""
 
-    # Sort by time
     df = df.sort_values("time")
-
-    # Fill missing values
     df = df.interpolate()
 
-    # Smooth thrust (rolling average)
     df["thrust"] = df["thrust"].rolling(window=3, min_periods=1).mean()
 
-    # Round values
     df["time"] = df["time"].round(3)
     df["thrust"] = df["thrust"].round(3)
 
-    # Drop NaN
     df = df.dropna()
 
     return df
@@ -48,4 +58,4 @@ def process_thrust_curve(df):
     df = validate_data(df)
     df = clean_data(df)
 
-    return df   # ✅ ONLY return df
+    return df

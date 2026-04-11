@@ -21,19 +21,19 @@ function LandingPage() {
 
         <div className="hero-right">
           <ActionCard
-            title="Thrust Analysis"
-            desc="Upload CSV and analyze the thrust curve."
-            onClick={() => navigate("/analyze")}
-          />
-          <ActionCard
-            title="Generate .RSE"
-            desc="Create OpenRocket-compatible motor files."
+            title="Thrust Analysis & .RSE Generation"
+            desc="Upload CSV and analyze the thrust curve & download .RSE files"
             onClick={() => navigate("/analyze")}
           />
           <ActionCard
             title="Simulate Motor"
             desc="Run performance calculations for the motor setup."
             onClick={() => navigate("/simulate")}
+          />
+          <ActionCard
+            title="Comparison of Motors"
+            desc="Compare the performance of different motor configurations."
+            onClick={() => navigate("/compare")}
           />
         </div>
       </section>

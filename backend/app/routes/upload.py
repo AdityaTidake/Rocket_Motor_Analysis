@@ -1,4 +1,4 @@
-from fastapi import APIRouter, UploadFile, File
+from fastapi import APIRouter, UploadFile, File, Query
 from fastapi.responses import FileResponse
 import pandas as pd
 import numpy as np
@@ -9,50 +9,47 @@ from app.services.thrust_processing import process_thrust_curve
 from app.services.metrics_calc import compute_metrics
 from app.services.curve_fitting import best_fit_curve
 from app.utils.filtering import filter_range
-from app.utils.rse_generator import generate_rse_from_df   # ✅ NEW
+from app.utils.rse_generator import generate_rse_from_df
 
-router = APIRouter()
+router = APIRouter(prefix="/upload", tags=["Upload"])
 logger = setup_logger()
 
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
-@router.post("/upload")
-async def upload_csv(file: UploadFile = File(...),
-                     min_time: float = None,
-                     max_time: float = None):
-
+# ✅ SINGLE FILE UPLOAD
+@router.post("/")
+async def upload_csv(
+    file: UploadFile = File(...),
+    min_time: float = Query(None),
+    max_time: float = Query(None)
+):
     try:
         logger.info("CSV upload started")
 
-        # ✅ SAVE FILE (NEW)
+        # Save file
         filename = file.filename.replace(" ", "_")
         file_path = os.path.join(UPLOAD_FOLDER, filename)
 
+        content = await file.read()
         with open(file_path, "wb") as f:
-            f.write(await file.read())
+            f.write(content)
 
-        logger.info(f"CSV saved at {file_path}")
-
-        # ✅ READ CSV
+        # Read CSV
         df = pd.read_csv(file_path)
-        logger.info("CSV loaded successfully")
 
-        # Step 1: Clean data (UNCHANGED)
+        # Process
         df = process_thrust_curve(df)
-        logger.info("Thrust curve processed")
 
-        # Step 2: Fit on FULL data (UNCHANGED)
+        # Curve fitting
         fit_result = best_fit_curve(df["time"], df["thrust"])
-        logger.info("Curve fitting completed")
-
         full_time = df["time"].values
 
-        # Step 3: Filter for display (UNCHANGED)
+        # Filtering
         df_filtered = filter_range(df, min_time, max_time)
 
-        # Step 4: Filter ideal curve (UNCHANGED)
+        # Ideal curve filtering
         if min_time is not None and max_time is not None:
             mask = (full_time >= min_time) & (full_time <= max_time)
             filtered_ideal = np.array(fit_result["ideal_curve"])[mask]
@@ -60,17 +57,13 @@ async def upload_csv(file: UploadFile = File(...),
         else:
             filtered_ideal = fit_result["ideal_curve"]
 
-        # Step 5: Metrics (UNCHANGED)
+        # Metrics
         metrics = compute_metrics(df_filtered)
-        logger.info("Metrics calculated")
 
-        # ✅ STEP 6: GENERATE RSE (NEW 🔥)
+        # Generate RSE
         rse_filename = filename.replace(".csv", ".rse")
         rse_path = os.path.join(UPLOAD_FOLDER, rse_filename)
-
-        generate_rse_from_df(df, rse_path)   # using processed full data
-
-        logger.info(f"RSE generated at {rse_path}")
+        generate_rse_from_df(df, rse_path)
 
         return {
             "status": "success",
@@ -80,24 +73,18 @@ async def upload_csv(file: UploadFile = File(...),
             "ideal_curve": filtered_ideal,
             "time": df_filtered["time"].tolist(),
             "thrust": df_filtered["thrust"].tolist(),
-
-            # ✅ NEW OUTPUT
             "rse_file": rse_filename,
-            "download_url": f"/download-rse/?filename={rse_filename}"
+            "download_url": f"/upload/download-rse/?filename={rse_filename}"
         }
 
     except Exception as e:
-        logger.exception("Error occurred during upload processing")
-        return {
-            "status": "error",
-            "message": str(e)
-        }
+        logger.exception("Error occurred")
+        return {"status": "error", "message": str(e)}
 
 
-# ✅ DOWNLOAD API (NEW)
+# ✅ DOWNLOAD RSE
 @router.get("/download-rse/")
 def download_rse(filename: str):
-
     file_path = os.path.join(UPLOAD_FOLDER, filename)
 
     if not os.path.exists(file_path):
@@ -108,3 +95,44 @@ def download_rse(filename: str):
         media_type="application/xml",
         filename=filename
     )
+
+
+# ✅ COMPARE TWO MOTORS (FIXED)
+@router.post("/compare")
+async def compare(
+    file1: UploadFile = File(...),
+    file2: UploadFile = File(...)
+):
+    try:
+        # ✅ Read files safely
+        content1 = await file1.read()
+        content2 = await file2.read()
+
+        df1 = pd.read_csv(pd.io.common.BytesIO(content1))
+        df2 = pd.read_csv(pd.io.common.BytesIO(content2))
+
+        # Process
+        df1 = process_thrust_curve(df1)
+        df2 = process_thrust_curve(df2)
+
+        # Metrics
+        m1 = compute_metrics(df1)
+        m2 = compute_metrics(df2)
+
+        return {
+            "status": "success",
+            "motorA": {
+                "metrics": m1,
+                "time": df1["time"].tolist(),
+                "thrust": df1["thrust"].tolist()
+            },
+            "motorB": {
+                "metrics": m2,
+                "time": df2["time"].tolist(),
+                "thrust": df2["thrust"].tolist()
+            }
+        }
+
+    except Exception as e:
+        logger.exception("Compare error")
+        return {"status": "error", "message": str(e)}

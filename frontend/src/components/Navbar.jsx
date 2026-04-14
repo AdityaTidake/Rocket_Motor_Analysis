@@ -25,7 +25,14 @@ function Navbar() {
           to="/simulate"
           className={({ isActive }) => (isActive ? "active" : "")}
         >
-          Simulation
+          Simulate
+        </NavLink>
+
+        <NavLink
+          to="/compare"
+          className={({ isActive }) => (isActive ? "active" : "")}
+        >
+          Compare
         </NavLink>
       </div>
     </nav>

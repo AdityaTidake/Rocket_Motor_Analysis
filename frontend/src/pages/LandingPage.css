@@ -1,3 +1,20 @@
+@font-face {
+  font-family: "Swera";
+  src:
+    url("../assets/fonts/Swera\ Bold\ Demo.otf") format("woff2"),
+    url("../assets/fonts/Swera\ Regular\ Demo.otf") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-dislplay: swap;
+}
+
+@font-face {
+  font-family: "AstroSpace";
+  src: url("../assets/fonts/AstroSpace-eZ2Bg.ttf") format("woff2");
+  font-weight: 400;
+  fornt--style: normal;
+}
+
 .landing {
   position: relative;
   width: min(1200px, calc(100% - 32px));
@@ -12,13 +29,6 @@
   inset: 0;
   z-index: -2;
   background:
-    /*linear-gradient(
-      90deg,
-      rgba(4, 10, 24, 0.82) 0%,
-      rgba(4, 10, 24, 0.72) 34%,
-      rgba(4, 10, 24, 0.45) 58%,
-      rgba(4, 10, 24, 0.76) 100%
-    ),*/
     radial-gradient(
       circle at top left,
       rgba(59, 130, 246, 0.2),
@@ -29,7 +39,7 @@
       rgba(14, 165, 233, 0.16),
       transparent 30%
     ),
-    url("../assets/rocket.jpg") center center / cover no-repeat,
+    url("../assets/rocket2.jpg") center center / cover no-repeat,
     linear-gradient(145deg, rgba(8, 15, 31, 0.96), rgba(15, 23, 42, 0.92));
   pointer-events: none;
 }
@@ -56,7 +66,7 @@
   gap: 32px;
   min-height: calc(100vh - 140px);
   position: relative;
-  padding: 48px;
+  padding: 32px 20px;
   /* border: 1px solid rgba(148, 163, 184, 0.18);
   border-radius: 28px;
   overflow: hidden; */
@@ -69,11 +79,6 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.03),
-    rgba(255, 255, 255, 0)
-  );
   pointer-events: none;
 }
 
@@ -86,6 +91,7 @@ footer {
 
 .hero-left {
   max-width: 34rem;
+  padding-bottom: 64px;
 }
 
 .hero-eyebrow {
@@ -104,8 +110,16 @@ footer {
 
 .hero-left h1 {
   font-size: clamp(2.7rem, 5vw, 4.8rem);
-  line-height: 0.95;
-  margin-bottom: 20px;
+  line-height: 1;
+  font-weight: 800;
+  margin-bottom: 4px;
+  padding-bottom: 5px;
+  letter-spacing: -1px;
+  background: linear-gradient(to right, #e0f2fe, #0066ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: "AstroSpace", system-ui, sans-serif;
+  text-shadow: 0 4px 20px rgba(56, 189, 248, 0.25);
 }
 
 .hero-left p {
@@ -194,6 +208,40 @@ footer {
   padding: 28px 0 8px;
   text-align: center;
   color: #94a3b8;
+}
+
+.about {
+  display: grid;
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(14, 165, 233, 0.16);
+  border-radius: 18px;
+  backdrop-filter: blur(12px);
+  padding: 20px;
+  margin-top: 32px;
+  margin-left: 32px;
+  margin-right: 32px;
+}
+
+.about-content {
+  font-size: 1.06rem;
+  line-height: 1.75;
+}
+
+.about-content h2 {
+  font-size: 1.8rem;
+  text-align: center;
+  font-family: "AstroSpace", system-ui, sans-serif;
+  margin-bottom: 20px;
+  background: linear-gradient(to right, #e0f2fe, #0066ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.about-points {
+  color: #89b1ed;
+  margin-top: 16px;
+  display: flex;
+  font-weight: 600;
 }
 
 @media (max-width: 1080px) {

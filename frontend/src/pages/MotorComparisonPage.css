@@ -1,0 +1,208 @@
+.comparison-upload-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.comparison-upload-label {
+  font-size: 0.9rem;
+  color: #a3b8cc;
+  font-weight: 600;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.comparison-upload-area {
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.comparison-upload-area.has-file.motor-1 {
+  border-color: #fca5a5;
+  background: rgba(248, 113, 113, 0.05);
+}
+
+.comparison-upload-area.has-file.motor-2 {
+  border-color: #d8b4fe;
+  background: rgba(192, 132, 252, 0.05);
+}
+
+.comparison-action-row {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.comparison-action-row .btn {
+  min-width: 180px;
+}
+
+.comparison-metric-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+  align-items: end;
+}
+
+.comparison-metric-title {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #a3b8cc;
+  text-align: center;
+  font-weight: 600;
+}
+
+.comparison-header-block {
+  text-align: center;
+}
+
+.comparison-pill {
+  display: inline-block;
+  padding: 4px 16px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.comparison-pill.motor-1 {
+  background: rgba(248, 113, 113, 0.15);
+  color: #fca5a5;
+  border: 1px solid rgba(248, 113, 113, 0.3);
+}
+
+.comparison-pill.motor-2 {
+  background: rgba(192, 132, 252, 0.15);
+  color: #d8b4fe;
+  border: 1px solid rgba(192, 132, 252, 0.3);
+}
+
+.comparison-header-file {
+  margin-top: 8px;
+  color: #e6edf3;
+  font-size: 0.8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.comparison-metric-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.comparison-metric-row:last-child {
+  border-bottom: 0;
+}
+
+.comparison-metric-label {
+  font-size: 0.95rem;
+  color: #a3b8cc;
+  text-align: center;
+  font-weight: 600;
+}
+
+.comparison-metric-value {
+  text-align: center;
+  font-weight: 600;
+  color: #e6edf3;
+  background: rgba(4, 13, 33, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 1.05rem;
+  transition: all 0.3s ease;
+}
+
+.comparison-metric-value.is-better.is-motor-1 {
+  color: #fca5a5;
+  background: rgba(248, 113, 113, 0.1);
+  border-color: rgba(248, 113, 113, 0.3);
+  box-shadow: 0 0 16px rgba(248, 113, 113, 0.1);
+}
+
+.comparison-metric-value.is-better.is-motor-2 {
+  color: #d8b4fe;
+  background: rgba(192, 132, 252, 0.1);
+  border-color: rgba(192, 132, 252, 0.3);
+  box-shadow: 0 0 16px rgba(192, 132, 252, 0.1);
+}
+
+.comparison-metric-badge {
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.comparison-winner-card {
+  text-align: center;
+  padding: 40px;
+}
+
+.comparison-winner-card.winner-motor-1 {
+  background: linear-gradient(180deg, rgba(10, 15, 30, 0.6) 0%, rgba(248, 113, 113, 0.1) 100%);
+  border-color: rgba(248, 113, 113, 0.4);
+  box-shadow: 0 8px 32px rgba(248, 113, 113, 0.15);
+}
+
+.comparison-winner-card.winner-motor-2 {
+  background: linear-gradient(180deg, rgba(10, 15, 30, 0.6) 0%, rgba(192, 132, 252, 0.1) 100%);
+  border-color: rgba(192, 132, 252, 0.4);
+  box-shadow: 0 8px 32px rgba(192, 132, 252, 0.15);
+}
+
+.comparison-winner-card.winner-tie {
+  background: linear-gradient(180deg, rgba(10, 15, 30, 0.6) 0%, rgba(88, 166, 255, 0.1) 100%);
+  border-color: rgba(88, 166, 255, 0.4);
+  box-shadow: 0 8px 32px rgba(88, 166, 255, 0.15);
+}
+
+.comparison-winner-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #e6edf3;
+  margin-bottom: 12px;
+  letter-spacing: 0.05em;
+  font-family: "AstroSpace", system-ui, sans-serif;
+}
+
+.comparison-winner-text {
+  margin: 0;
+  color: #a3b8cc;
+  font-size: 1.05rem;
+}
+
+@media (max-width: 768px) {
+  .comparison-upload-grid,
+  .comparison-metric-header,
+  .comparison-metric-row {
+    grid-template-columns: 1fr;
+  }
+
+  .comparison-metric-title,
+  .comparison-metric-label,
+  .comparison-metric-value {
+    text-align: left;
+  }
+
+  .comparison-header-block {
+    text-align: left;
+    margin-bottom: 8px;
+  }
+}

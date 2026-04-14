@@ -4,7 +4,7 @@ import LandingPage from "./pages/LandingPage";
 import Navbar from "./components/Navbar";
 import UploadPage from "./pages/UploadPage";
 import SimulatePage from "./pages/SimulatePage";
-import MotorComparison from "./components/MotorComparison";
+import MotorComparisonPage from "./pages/MotorComparisonPage";
 
 function App() {
   return (
@@ -14,7 +14,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/analyze" element={<UploadPage />} />
         <Route path="/simulate" element={<SimulatePage />} />
-        <Route path="/compare" element={<MotorComparison />} />
+        <Route path="/compare" element={<MotorComparisonPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>

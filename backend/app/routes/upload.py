@@ -74,7 +74,7 @@ async def upload_csv(
             "time": df_filtered["time"].tolist(),
             "thrust": df_filtered["thrust"].tolist(),
             "rse_file": rse_filename,
-            "download_url": f"/upload/download-rse/?filename={rse_filename}"
+            "download_url": f"/api/upload/download-rse/?filename={rse_filename}"
         }
 
     except Exception as e:

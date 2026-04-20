@@ -3,14 +3,28 @@ import axios from "axios";
 import SimChart from "../components/SimChart";
 import ErrorBoundary from "../components/ErrorBoundary";
 import "katex/dist/katex.min.css";
-import { BlockMath, InlineMath } from "react-katex";
+import { BlockMath } from "react-katex";
 
 export default function SimulatePage() {
   const [file, setFile] = useState(null);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [params, setParams] = useState({
+    mass: "",
+    Cd: "",
+    area: "",
+    rho: "",
+  });
   const inputRef = useRef();
+
+  const handleParamChange = (e) => {
+    const { name, value } = e.target;
+    setParams((current) => ({
+      ...current,
+      [name]: value,
+    }));
+  };
 
   const handleSimulate = async () => {
     if (!file) return;
@@ -42,7 +56,30 @@ export default function SimulatePage() {
         })
         .filter((r) => !isNaN(r.time) && !isNaN(r.thrust));
 
-      const res = await axios.post("/api/simulate", { thrust_curve });
+      if (Object.values(params).some((value) => value.trim() === "")) {
+        setError("Enter mass, Cd, area, and rho before running the simulation");
+        setLoading(false);
+        return;
+      }
+
+      const mass = parseFloat(params.mass);
+      const Cd = parseFloat(params.Cd);
+      const area = parseFloat(params.area);
+      const rho = parseFloat(params.rho);
+
+      if ([mass, Cd, area, rho].some((value) => Number.isNaN(value))) {
+        setError("Mass, Cd, area, and rho must all be valid numbers");
+        setLoading(false);
+        return;
+      }
+
+      const res = await axios.post("/api/simulate", {
+        thrust_curve,
+        mass,
+        Cd,
+        area,
+        rho,
+      });
 
       if (res.data.status === "error") {
         setError(res.data.message);
@@ -81,6 +118,17 @@ export default function SimulatePage() {
         <p>Acceleration varies based on net force:</p>
         <BlockMath math="a(t) = \frac{T(t) - mg - D}{m}" />
         <p>Determines how quickly the rocket speeds up or slows down.</p>
+
+        <div className="page-points">🔹 Drag Force</div>
+        <p>Drag is computed using the parameters you provide on the simulator:</p>
+        <BlockMath math="D = \frac{1}{2}\rho C_d A v^2" />
+        <p>
+          Where: <br />
+          &rho; → Air density <br />
+          C<sub>d</sub> → Drag coefficient <br />
+          A → Reference area <br />
+          v → Velocity
+        </p>
 
         {/* Velocity */}
         <div className="page-points">🔹 Velocity</div>
@@ -123,6 +171,60 @@ export default function SimulatePage() {
           Upload a thrust CSV to simulate altitude, velocity, and acceleration
           over time.
         </p>
+        <div className="sim-params-grid">
+          <label>
+            Mass (kg)
+            <input
+              type="number"
+              name="mass"
+              value={params.mass}
+              onChange={handleParamChange}
+              required
+              min="0"
+              step="any"
+              placeholder="e.g. 1.5"
+            />
+          </label>
+          <label>
+            Cd
+            <input
+              type="number"
+              name="Cd"
+              value={params.Cd}
+              onChange={handleParamChange}
+              required
+              min="0"
+              step="any"
+              placeholder="e.g. 0.75"
+            />
+          </label>
+          <label>
+            Area (m²)
+            <input
+              type="number"
+              name="area"
+              value={params.area}
+              onChange={handleParamChange}
+              required
+              min="0"
+              step="any"
+              placeholder="e.g. 0.01"
+            />
+          </label>
+          <label>
+            Rho (kg/m³)
+            <input
+              type="number"
+              name="rho"
+              value={params.rho}
+              onChange={handleParamChange}
+              required
+              min="0"
+              step="any"
+              placeholder="e.g. 1.225"
+            />
+          </label>
+        </div>
         <div className="upload-area" onClick={() => inputRef.current.click()}>
           <input
             ref={inputRef}

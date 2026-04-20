@@ -1,15 +1,15 @@
 import numpy as np
 
-def simulate_flight(df, mass=1.5, Cd=0.75, area=0.01):
+
+def simulate_flight(df, mass, Cd, area, rho):
     try:
         g = 9.81
-        rho = 1.225
 
-        # ✅ Ensure numeric values
+        #  Ensure numeric values
         df["time"] = df["time"].astype(float)
         df["thrust"] = df["thrust"].astype(float)
 
-        # ✅ Remove NaN
+        #  Remove NaN
         df = df.dropna()
 
         time = df["time"].values
@@ -23,12 +23,12 @@ def simulate_flight(df, mass=1.5, Cd=0.75, area=0.01):
         accel_list = []
 
         for i in range(len(time)):
-            # ✅ Safe drag calculation
+            #  Safe drag calculation
             drag = 0.5 * rho * Cd * area * (velocity ** 2)
 
             accel = (thrust[i] - drag - mass * g) / mass
 
-            # ✅ Safe timestep
+            #  Safe timestep
             dt = time[i] - time[i-1] if i > 0 else 0.01
             if dt <= 0:
                 dt = 0.01  # fallback safety
@@ -48,5 +48,5 @@ def simulate_flight(df, mass=1.5, Cd=0.75, area=0.01):
         }
 
     except Exception as e:
-        print("SIMULATOR ERROR:", str(e))  # 🔥 important debug
+        print("SIMULATOR ERROR:", str(e))  
         raise e

@@ -1,0 +1,52 @@
+[2m10:58:10 am[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mIn HTML, <div> cannot be a descendant of <p>.
+This will cause a hydration error.
+
+  <BrowserRouter>
+    <Router basename={undefined} location={{pathname:"/", ...}} navigationType="POP" navigator={{action:"POP", ...}} ...>
+      <App>
+        <Navbar>
+        <Routes>
+          <RenderedRoute match={{params:{}, ...}} routeContext={{outlet:null, ...}}>
+            <LandingPage>
+              <div className="landing">
+                <section>
+                <section>
+                <section className="about">
+                  <div className="about-content">
+                    <h2>
+>                   <p>
+                      <br>
+>                     <div class="about-points">
+                      ...
+                ...
+
+[2m10:58:10 am[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mInvalid DOM property `class`. Did you mean `className`?
+[2m11:06:08 am[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22mIn HTML, <div> cannot be a descendant of <p>.
+This will cause a hydration error.
+
+  <BrowserRouter>
+    <Router basename={undefined} location={{pathname:"...", ...}} navigationType="PUSH" navigator={{action:"PUSH", ...}} ...>
+      <App>
+        <Navbar>
+        <Routes>
+          <RenderedRoute match={{params:{}, ...}} routeContext={{outlet:null, ...}}>
+            <UploadPage>
+              <div className="page">
+                <div className="page-content">
+                  <h2>
+                  <p>
+                  <div>
+                  <p>
+                  <div>
+>                 <p>
+                    <br>
+                    <MathComponent math="I = \int F...">
+                      <InternalBlockMath html={"<span cl..."}>
+>                       <div data-testid="react-katex" dangerouslySetInnerHTML={{__html:"<span clas..."}}>
+                    ...
+                  ...
+                ...
+
+[2m11:06:08 am[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m [2m[console.error] [22m<p> cannot contain a nested <div>.
+See this log for the ancestor stack trace.
+^C

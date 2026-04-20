@@ -18,7 +18,7 @@ UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
-# ✅ SINGLE FILE UPLOAD
+#  SINGLE FILE UPLOAD
 @router.post("/")
 async def upload_csv(
     file: UploadFile = File(...),
@@ -82,7 +82,7 @@ async def upload_csv(
         return {"status": "error", "message": str(e)}
 
 
-# ✅ DOWNLOAD RSE
+# # DOWNLOAD RSE
 @router.get("/download-rse/")
 def download_rse(filename: str):
     file_path = os.path.join(UPLOAD_FOLDER, filename)
@@ -97,14 +97,14 @@ def download_rse(filename: str):
     )
 
 
-# ✅ COMPARE TWO MOTORS (FIXED)
+#  COMPARE TWO MOTORS (FIXED)
 @router.post("/compare")
 async def compare(
     file1: UploadFile = File(...),
     file2: UploadFile = File(...)
 ):
     try:
-        # ✅ Read files safely
+        #  Read files safely
         content1 = await file1.read()
         content2 = await file2.read()
 

@@ -1,20 +1,3 @@
-# from fastapi import APIRouter, HTTPException
-# import pandas as pd
-# from app.services.simulator import simulate_flight # This is correct HERE
-
-# router = APIRouter()
-# # ... rest of code
-
-# @router.post("/simulate")
-# async def run_simulation(data: dict):
-#     # ... your existing validation logic ...
-#     df = pd.DataFrame(data["thrust_curve"]).sort_values(by="time")
-    
-#     # This now calls the logic above
-#     result = simulate_flight(df) 
-    
-#     return {"status": "success", "simulation": result}
-
 from fastapi import APIRouter, HTTPException
 import pandas as pd
 from app.services.simulator import simulate_flight
@@ -22,7 +5,7 @@ from app.services.simulator import simulate_flight
 # 1. DEFINE the router first
 router = APIRouter()
 
-# 2. NOW you can use the router decorator
+# 2. use the router decorator
 @router.post("/simulate")
 async def run_simulation(data: dict):
     print(f"DEBUG: Received data for simulation: {data}")   
@@ -37,7 +20,33 @@ async def run_simulation(data: dict):
             raise HTTPException(status_code=400, detail="Missing 'time' or 'thrust' columns")
 
         df = df.sort_values(by="time")
-        result = simulate_flight(df)
+
+        required_params = ("mass", "Cd", "area", "rho")
+        missing_params = [param for param in required_params if param not in data]
+        if missing_params:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Missing simulation parameters: {', '.join(missing_params)}",
+            )
+
+        try:
+            mass = float(data["mass"])
+            cd = float(data["Cd"])
+            area = float(data["area"])
+            rho = float(data["rho"])
+        except (TypeError, ValueError):
+            raise HTTPException(
+                status_code=400,
+                detail="Simulation parameters mass, Cd, area, and rho must be numeric",
+            )
+
+        if mass <= 0 or cd < 0 or area <= 0 or rho <= 0:
+            raise HTTPException(
+                status_code=400,
+                detail="Simulation parameters must satisfy: mass > 0, Cd >= 0, area > 0, rho > 0",
+            )
+
+        result = simulate_flight(df, mass=mass, Cd=cd, area=area, rho=rho)
 
         return {
             "status": "success",

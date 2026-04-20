@@ -4,7 +4,7 @@ import io
 
 router = APIRouter()
 
-# ✅ CSV PROCESS FUNCTION
+# CSV PROCESS FUNCTION
 async def process_csv(file: UploadFile):
     try:
         content = await file.read()
@@ -65,16 +65,18 @@ async def process_csv(file: UploadFile):
     except Exception as e:
         raise ValueError(f"CSV Processing Error: {str(e)}")
     
-# ✅ METRICS FUNCTION
+#  METRICS FUNCTION
 def compute_metrics(df):
     return {
         "max_thrust": float(df["thrust"].max()),
         "total_impulse": float(df["thrust"].sum()),
         "burn_time": float(df["time"].max())
+
+        
     }
 
 
-# ✅ MAIN API
+# MAIN API
 @router.post("/compare-motors/")
 async def compare_motors(
     motor1: UploadFile = File(...),

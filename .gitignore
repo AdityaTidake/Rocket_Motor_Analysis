@@ -2,3 +2,21 @@ backend/uploads/*
 !backend/uploads/.gitkeep
 !backend/uploads/sample1.csv
 !backend/uploads/sample2.csv
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Python virtual environments
+.venv/
+venv/
+env/
+
+# Vite cache
+frontend/.vite/
+
+
+# Logs
+*.log

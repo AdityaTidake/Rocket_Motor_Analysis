@@ -34,6 +34,8 @@ export default function MotorComparisonPage() {
   const [error, setError] = useState("");
   const inputRef1 = useRef(null);
   const inputRef2 = useRef(null);
+  const comparisonXAxisTitle = "Time (s)";
+  const comparisonYAxisTitle = "Thrust (N)";
 
   const handleSubmit = async () => {
     if (!file1 || !file2) {
@@ -206,6 +208,7 @@ export default function MotorComparisonPage() {
                   mode: "lines",
                   name: file1?.name || "Motor 1",
                   line: { color: "#f87171", width: 2.5 },
+                  hovertemplate: `${comparisonXAxisTitle}: %{x}<br>${comparisonYAxisTitle}: %{y}<extra></extra>`,
                 },
                 {
                   x: data.motor2.time,
@@ -214,18 +217,21 @@ export default function MotorComparisonPage() {
                   mode: "lines",
                   name: file2?.name || "Motor 2",
                   line: { color: "#c084fc", width: 2.5 },
+                  hovertemplate: `${comparisonXAxisTitle}: %{x}<br>${comparisonYAxisTitle}: %{y}<extra></extra>`,
                 },
               ]}
               layout={{
                 autosize: true,
-                margin: { t: 10, r: 20, b: 50, l: 60 },
+                margin: { t: 10, r: 20, b: 70, l: 80 },
                 xaxis: {
-                  title: "Time (s)",
+                  title: { text: comparisonXAxisTitle, standoff: 14 },
+                  automargin: true,
                   color: "#a3b8cc",
                   gridcolor: "rgba(255,255,255,0.1)",
                 },
                 yaxis: {
-                  title: "Thrust (N)",
+                  title: { text: comparisonYAxisTitle, standoff: 18 },
+                  automargin: true,
                   color: "#a3b8cc",
                   gridcolor: "rgba(255,255,255,0.1)",
                 },

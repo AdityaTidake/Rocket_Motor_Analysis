@@ -3,13 +3,28 @@ import Plot from "./PlotlyChart";
 
 export default function SimChart({ time, altitude, velocity, acceleration }) {
   const [tab, setTab] = useState("altitude");
+  const xAxisTitle = "Time (s)";
 
   const dataMap = {
-    altitude: { y: altitude, label: "Altitude (m)", color: "#27ae60" },
-    velocity: { y: velocity, label: "Velocity (m/s)", color: "#2980b9" },
+    altitude: {
+      y: altitude,
+      parameter: "Altitude",
+      unit: "m",
+      yAxisTitle: "Altitude (m)",
+      color: "#27ae60",
+    },
+    velocity: {
+      y: velocity,
+      parameter: "Velocity",
+      unit: "m/s",
+      yAxisTitle: "Velocity (m/s)",
+      color: "#2980b9",
+    },
     acceleration: {
       y: acceleration,
-      label: "Acceleration (m/s²)",
+      parameter: "Acceleration",
+      unit: "m/s^2",
+      yAxisTitle: "Acceleration (m/s^2)",
       color: "#e67e22",
     },
   };
@@ -36,14 +51,22 @@ export default function SimChart({ time, altitude, velocity, acceleration }) {
             y: current.y,
             type: "scatter",
             mode: "lines",
+            name: current.yAxisTitle,
             line: { color: current.color, width: 2 },
+            hovertemplate: `${xAxisTitle}: %{x}<br>${current.parameter} (${current.unit}): %{y}<extra></extra>`,
           },
         ]}
         layout={{
-          title: `${current.label} vs Time`,
-          xaxis: { title: "Time (s)" },
-          yaxis: { title: current.label },
-          margin: { t: 40, r: 20, b: 50, l: 70 },
+          title: `${current.parameter} vs Time`,
+          xaxis: {
+            title: { text: xAxisTitle, standoff: 14 },
+            automargin: true,
+          },
+          yaxis: {
+            title: { text: current.yAxisTitle, standoff: 18 },
+            automargin: true,
+          },
+          margin: { t: 40, r: 20, b: 70, l: 90 },
           autosize: true,
         }}
         useResizeHandler

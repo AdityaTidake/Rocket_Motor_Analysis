@@ -1,6 +1,9 @@
 import Plot from './PlotlyChart'
 
 export default function ThrustChart({ time, thrust, idealCurve }) {
+  const xAxisTitle = 'Time (s)'
+  const yAxisTitle = 'Thrust (N)'
+
   const traces = [
     {
       x: time,
@@ -9,6 +12,7 @@ export default function ThrustChart({ time, thrust, idealCurve }) {
       mode: 'lines',
       name: 'Measured Thrust',
       line: { color: '#e94560', width: 2 },
+      hovertemplate: `${xAxisTitle}: %{x}<br>${yAxisTitle}: %{y}<extra></extra>`,
     },
   ]
 
@@ -20,6 +24,7 @@ export default function ThrustChart({ time, thrust, idealCurve }) {
       mode: 'lines',
       name: 'Best Fit Curve',
       line: { color: '#3b4cca', width: 2, dash: 'dash' },
+      hovertemplate: `${xAxisTitle}: %{x}<br>${yAxisTitle}: %{y}<extra></extra>`,
     })
   }
 
@@ -28,9 +33,15 @@ export default function ThrustChart({ time, thrust, idealCurve }) {
       data={traces}
       layout={{
         title: 'Thrust vs Time',
-        xaxis: { title: 'Time (s)' },
-        yaxis: { title: 'Thrust (N)' },
-        margin: { t: 40, r: 20, b: 50, l: 60 },
+        xaxis: {
+          title: { text: xAxisTitle, standoff: 14 },
+          automargin: true,
+        },
+        yaxis: {
+          title: { text: yAxisTitle, standoff: 18 },
+          automargin: true,
+        },
+        margin: { t: 40, r: 20, b: 70, l: 80 },
         legend: { orientation: 'h', y: -0.2 },
         autosize: true,
       }}

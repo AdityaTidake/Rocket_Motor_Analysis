@@ -1,0 +1,25 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f4f6f9;
+  color: #333;
+} */
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  color: white;
+
+  background: radial-gradient(circle at 20% 20%, #1a1f35, #05070d);
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}

@@ -1,43 +1,52 @@
 import numpy as np
 
-def simulate_flight(df, mass=1.5, Cd=0.75, area=0.01):
 
-    g = 9.81
-    rho = 1.225
+def simulate_flight(df, mass, Cd, area, rho):
+    try:
+        g = 9.81
 
-    time = df["time"].values
-    thrust = df["thrust"].values
+        #  Ensure numeric values
+        df["time"] = df["time"].astype(float)
+        df["thrust"] = df["thrust"].astype(float)
 
-    dt = time[1] - time[0]
+        #  Remove NaN
+        df = df.dropna()
 
-    velocity = 0
-    altitude = 0
+        time = df["time"].values
+        thrust = df["thrust"].values
 
-    velocity_list = []
-    altitude_list = []
-    accel_list = []
+        velocity = 0.0
+        altitude = 0.0
 
-    for F in thrust:
+        velocity_list = []
+        altitude_list = []
+        accel_list = []
 
-        drag = 0.5 * rho * Cd * area * velocity**2
-        weight = mass * g
+        for i in range(len(time)):
+            #  Safe drag calculation
+            drag = 0.5 * rho * Cd * area * (velocity ** 2)
 
-        accel = (F - weight - drag) / mass
+            accel = (thrust[i] - drag - mass * g) / mass
 
-        velocity = velocity + accel * dt
-        altitude = altitude + velocity * dt
+            #  Safe timestep
+            dt = time[i] - time[i-1] if i > 0 else 0.01
+            if dt <= 0:
+                dt = 0.01  # fallback safety
 
-        if altitude <0:
-            altitude=0
+            velocity += accel * dt
+            altitude += velocity * dt
 
-        velocity_list.append(velocity)
-        altitude_list.append(altitude)
-        accel_list.append(accel)
+            velocity_list.append(float(velocity))
+            altitude_list.append(float(altitude))
+            accel_list.append(float(accel))
 
-    return {
-        "time": np.round(time,3).tolist(),
-        "altitude": np.round(altitude_list,3).tolist(),
-        "velocity": np.round(velocity_list,3).tolist(),
-        "acceleration": np.round(accel_list,3).tolist()
-    }
+        return {
+            "time": time.tolist(),
+            "velocity": velocity_list,
+            "altitude": altitude_list,
+            "acceleration": accel_list
+        }
 
+    except Exception as e:
+        print("SIMULATOR ERROR:", str(e))  
+        raise e

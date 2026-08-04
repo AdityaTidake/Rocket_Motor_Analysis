@@ -1,11 +1,3 @@
-# import numpy as np
-# def polynomial_fit(time, thrust):
-#     coeff = np.polyfit(time, thrust,2)
-#     a,b,c = coeff
-#     equation = f"y = {a:.3f}x^2 + {b:.3f}x + {c:.3f}" 
-#     return equation, coeff
- 
-
 
 import numpy as np
 from scipy.optimize import curve_fit

@@ -1,0 +1,4 @@
+backend/uploads/*
+!backend/uploads/.gitkeep
+!backend/uploads/sample1.csv
+!backend/uploads/sample2.csv

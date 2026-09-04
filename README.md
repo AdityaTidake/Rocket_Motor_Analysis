@@ -111,6 +111,12 @@ A simple end-to-end user journey for this application looks like this:
 5. Use the simulation page to provide flight parameters such as mass, drag coefficient, area, and air density.
 6. View the final output charts and metrics in the UI.
 
+
+## Developed by:
+- Dhanashree Sonawane
+- Aditya Tidake
+
+
 <!-- ## 📸 Screenshots
 
 Add images here to document the main user-facing screens. Recommended screenshots:
